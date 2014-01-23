@@ -1,0 +1,23 @@
+%h1 Listing stories
+
+%table
+  %tr
+    %th Story text
+    %th Tags
+    %th Location
+    %th
+    %th
+    %th
+
+  - @stories.each do |story|
+    %tr
+      %td= story.story_text
+      %td= story.tags
+      %td= story.location_id
+      %td= link_to 'Show', story
+      %td= link_to 'Edit', edit_story_path(story)
+      %td= link_to 'Destroy', story, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Story', new_story_path

@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  lat: 9.99
+  lng: 9.99
+  location_type: MyString
+  website_url: MyString
+  short_text: MyString
+
+two:
+  name: MyString
+  lat: 9.99
+  lng: 9.99
+  location_type: MyString
+  website_url: MyString
+  short_text: MyString
