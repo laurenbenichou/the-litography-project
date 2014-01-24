@@ -3,8 +3,8 @@
   =image_tag 'litography.png', :class => 'logo'
 .overlay
   .story
-    %a{:href => '#', :class => 'close-story'} x
-    .story-text 
+    %a{:href => '#', :class => 'close-story'} X
+    .story-text
 
 %ul.top-bar
   %li
@@ -95,7 +95,7 @@
     }
   ];
 
-
+  var markers;
   litMap.buildMap({ 
     provider: {
       styles: mapStyles,
@@ -110,7 +110,8 @@
     }, 
     internal: {id: 'map'}}, 
     function(){
-      var markers = litMap.addMarkers(#{raw @locationMarkers.to_json});
+      markers = #{raw @locationMarkers.to_json};
+      litMap.addMarkers(markers);
 
       var mapObj = litMap.getMap()
 
@@ -139,12 +140,20 @@
          mapObj.setCenter(new google.maps.LatLng(y, x));
       });
     });
-
-
+  
   $('body').on('click', '.open-story', function(e) {
     e.preventDefault();
     $('.overlay').css('visibility', 'visible');
-    $('.story-text').html("#{j @stories[0].story_text}");
+    var stories = $(e.target).attr('data-stories').split(',');
+    var tabsHTML = '<ul class="nav nav-tabs">';
+    var tabsContentHTML = '<div class="tab-content">';
+    for(var story in stories) {
+      tabsHTML += '<li><a href="#' + story + '" data-toggle="tab">' + story + '</a></li>';
+      tabsContentHTML += '<div class="tab-pane" id="' + story + '">' + 'test content' + '</div>';
+    }
+    tabsHTML += '</ul>';
+    tabsContentHTML += '</div>';
+    $('.story-text').html(tabsHTML + tabsContentHTML);
     return false;
   });
   $('body').on('click', '.close-story', function(e) {
