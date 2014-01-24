@@ -54,7 +54,7 @@ test:
 production:
   adapter: postgresql
   encoding: unicode
-  database: thelitographyproject_production
+  database: d6m8ih0vse566u
   pool: 5
-  username: thelitographyproject
-  password:
+  username: pgjdzlimffymjl
+  password: LI-xFuiPyIADoOERrVjS5Egkev
