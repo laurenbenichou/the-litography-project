@@ -4,13 +4,12 @@ class LocationsController < ApplicationController
   layout 'admin', :except => :map
 
   def map
-    @locations = Location.all
-    @locationMarkers = Gmaps4rails.build_markers(@locations) do |location, marker|
+    locations = Location.all
+    @locationMarkers = Gmaps4rails.build_markers(locations) do |location, marker|
       marker.lat location.lat
       marker.lng location.lng
-      marker.infowindow '<a href="#" class="open-story">' << location.name << '</a>'
+      marker.infowindow '<a href="#" class="open-story" data-stories="' << location.stories.map{ |story| story.id }.join(",") << '">' << location.name << '</a>'
     end
-    @stories = Story.all
   end
 
   # GET /locations
