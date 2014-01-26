@@ -58,7 +58,7 @@ html, body {
 .top-bar li {
     float:left;
 }
-.top-bar li, ul li a{
+.top-bar li, .top-bar li a{
     width:150px;
     height:100px;
 }
@@ -98,4 +98,16 @@ li a:hover {
 }
 .close-story:visited {
   color: white;
+}
+
+
+.nav>li>a {
+  font-size: 20px;  
+  color: white;
+}
+.nav>li>a:hover, .nav>li>a:focus {
+  background-color: rgba(0,0,0,.5);
+}
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
+  background-color: rgba(0,0,0,.5);
 }
