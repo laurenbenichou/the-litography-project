@@ -16,3 +16,5 @@
 //= require_directory .
 //= require underscore
 //= require gmaps/google
+//= require ckeditor/override
+//= require ckeditor/init

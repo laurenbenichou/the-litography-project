@@ -1,8 +1,6 @@
 class LocationsController < ApplicationController
   before_action :set_location, only: [:show, :edit, :update, :destroy]
 
-  layout 'admin', :except => :map
-
   def map
     locations = Location.all
     @locationMarkers = Gmaps4rails.build_markers(locations) do |location, marker|
