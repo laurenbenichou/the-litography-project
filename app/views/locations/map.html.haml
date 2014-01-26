@@ -143,19 +143,37 @@
   
   $('body').on('click', '.open-story', function(e) {
     e.preventDefault();
+
     $('.overlay').css('visibility', 'visible');
+
     var stories = $(e.target).attr('data-stories').split(',');
     var tabsHTML = '<ul class="nav nav-tabs">';
     var tabsContentHTML = '<div class="tab-content">';
+
     for(var story in stories) {
-      tabsHTML += '<li><a href="#' + story + '" data-toggle="tab">' + story + '</a></li>';
-      tabsContentHTML += '<div class="tab-pane" id="' + story + '">' + 'test content' + '</div>';
+      if (story != 0) {
+        tabsHTML += '<li><a href="#' + (parseInt(story)+1) + '" data-toggle="tab">' + (parseInt(story)+1) + '</a></li>';
+        tabsContentHTML += '<div class="tab-pane ' + stories[story] + '" id="' + (parseInt(story)+1) + '"></div>';
+      } else {
+        tabsHTML += '<li class="active"><a href="#' + (parseInt(story)+1) + '" data-toggle="tab">' + (parseInt(story)+1) + '</a></li>';
+        tabsContentHTML += '<div class="tab-pane active ' + stories[story] + '" id="' + (parseInt(story)+1) + '"></div>';
+      }
+
     }
+
     tabsHTML += '</ul>';
     tabsContentHTML += '</div>';
+
     $('.story-text').html(tabsHTML + tabsContentHTML);
+
+    for(var story in stories) {
+      $.get("/stories/"+stories[story]+".json", function(data) {
+        $('div.tab-pane.'+data.id).html(data.story_text);
+      });
+    }
     return false;
   });
+
   $('body').on('click', '.close-story', function(e) {
     e.preventDefault();
     $('.overlay').css('visibility', 'hidden');
