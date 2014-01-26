@@ -27,7 +27,12 @@ Thelitographyproject::Application.configure do
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
-  config.assets.compile = false
+
+  ##############################################
+  # CHANGING TO TRUE FOR CKEDITOR (ONLY ADMIN)
+  # CHANGE IF FIX IS FOUND!
+  ##############################################
+  config.assets.compile = true 
 
   # Generate digests for assets URLs.
   config.assets.digest = true
@@ -63,7 +68,7 @@ Thelitographyproject::Application.configure do
   # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
   # config.assets.precompile += %w( search.js )
   config.assets.precompile += %w( .svg .eot .woff .ttf )
-  config.assets.precompile += Ckeditor.assets
+  #config.assets.precompile += Ckeditor.assets  DIDN'T WORK... KEEPING FOR REFERENCE
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
