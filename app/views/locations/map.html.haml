@@ -31,6 +31,29 @@
       =image_tag 'location/visual-orange.png', :class => 'menu-icon'
 
 :javascript
+  var menuImagePaths = {
+    "person-text" : "#{ asset_path 'locations/person-text.png' }",
+    "person-notext" : "#{ asset_path 'locations/person-notext.png' }",
+    "person-orange" : "#{ asset_path 'locations/person-orange.png' }",
+    "place-text" : "#{ asset_path 'locations/place-text.png' }",
+    "place-notext" : "#{ asset_path 'locations/place-notext.png' }",
+    "place-orange" : "#{ asset_path 'locations/place-orange.png' }",
+    "event-text" : "#{ asset_path 'locations/event-text.png' }",
+    "event-notext" : "#{ asset_path 'locations/event-notext.png' }",
+    "event-orange" : "#{ asset_path 'locations/event-orange.png' }",
+    "other-text" : "#{ asset_path 'locations/other-text.png' }",
+    "other-notext" : "#{ asset_path 'locations/other-notext.png' }",
+    "other-orange" : "#{ asset_path 'locations/other-orange.png' }",
+    "audio-text" : "#{ asset_path 'locations/audio-text.png' }",
+    "audio-notext" : "#{ asset_path 'locations/audio-notext.png' }",
+    "audio-orange" : "#{ asset_path 'locations/audio-orange.png' }",
+    "multimedia-text" : "#{ asset_path 'locations/multimedia-text.png' }",
+    "multimedia-notext" : "#{ asset_path 'locations/multimedia-notext.png' }",
+    "multimedia-orange" : "#{ asset_path 'locations/multimedia-orange.png' }",
+    "visual-text" : "#{ asset_path 'visual-text.png' }",
+    "visual-notext" : "#{ asset_path 'locations/visual-notext.png' }",
+    "visual-orange" : "#{ asset_path 'locations/visual-orange.png' }",
+  }
   $('.menu-bar').mouseenter(function() {
     $('.menu-icon').each(function(){
       this.src = this.src.replace(/(-)((?:[a-z][a-z]+))/, "-text");
