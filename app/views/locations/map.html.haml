@@ -1,5 +1,5 @@
 #map
-%a{:href => '#'}
+%a{:href => '#', :class => 'open-story'}
   =image_tag 'litography.png', :class => 'logo'
 .overlay
   .story
@@ -30,181 +30,160 @@
     %a.visual.active{:href => '#'}
       =image_tag 'location/visual-orange.png', :class => 'menu-icon'
 
-:javascript
-  var menuImagePaths = {
-    "person-text" : "#{ asset_path 'locations/person-text.png' }",
-    "person-notext" : "#{ asset_path 'locations/person-notext.png' }",
-    "person-orange" : "#{ asset_path 'locations/person-orange.png' }",
-    "place-text" : "#{ asset_path 'locations/place-text.png' }",
-    "place-notext" : "#{ asset_path 'locations/place-notext.png' }",
-    "place-orange" : "#{ asset_path 'locations/place-orange.png' }",
-    "event-text" : "#{ asset_path 'locations/event-text.png' }",
-    "event-notext" : "#{ asset_path 'locations/event-notext.png' }",
-    "event-orange" : "#{ asset_path 'locations/event-orange.png' }",
-    "other-text" : "#{ asset_path 'locations/other-text.png' }",
-    "other-notext" : "#{ asset_path 'locations/other-notext.png' }",
-    "other-orange" : "#{ asset_path 'locations/other-orange.png' }",
-    "audio-text" : "#{ asset_path 'locations/audio-text.png' }",
-    "audio-notext" : "#{ asset_path 'locations/audio-notext.png' }",
-    "audio-orange" : "#{ asset_path 'locations/audio-orange.png' }",
-    "multimedia-text" : "#{ asset_path 'locations/multimedia-text.png' }",
-    "multimedia-notext" : "#{ asset_path 'locations/multimedia-notext.png' }",
-    "multimedia-orange" : "#{ asset_path 'locations/multimedia-orange.png' }",
-    "visual-text" : "#{ asset_path 'visual-text.png' }",
-    "visual-notext" : "#{ asset_path 'locations/visual-notext.png' }",
-    "visual-orange" : "#{ asset_path 'locations/visual-orange.png' }",
-  }
-  $('.menu-bar').mouseenter(function() {
-    $('.menu-icon').each(function(){
-      this.src = this.src.replace(/(-)((?:[a-z][a-z]+))/, "-text");
-    });
-  });
-  $('.menu-bar').mouseleave(function() {
-    $('.menu-icon').each(function(){
-      this.src = this.src.replace(/(-)((?:[a-z][a-z]+))/, "-notext");
-    });
-  });
-  $('.menu-icon').mouseenter(function() {
-    this.src = this.src.replace(/(-)((?:[a-z][a-z]+))/, "-orange");
-  });
-  $('.menu-icon').mouseleave(function() {
-    this.src = this.src.replace(/(-)((?:[a-z][a-z]+))/, "-text");
-  });
+:coffee
 
-  litMap = Gmaps.build('Google');
+  menuImagePaths =
+    "person-text": "#{ asset_path('/assets/locations/person-text.png') }"
+    "person-notext": "#{ asset_path 'locations/person-notext.png' }"
+    "person-orange": "#{ asset_path 'locations/person-orange.png' }"
+    "place-text": "#{ asset_path 'locations/place-text.png' }"
+    "place-notext": "#{ asset_path 'locations/place-notext.png' }"
+    "place-orange": "#{ asset_path 'locations/place-orange.png' }"
+    "event-text": "#{ asset_path 'locations/event-text.png' }"
+    "event-notext": "#{ asset_path 'locations/event-notext.png' }"
+    "event-orange": "#{ asset_path 'locations/event-orange.png' }"
+    "other-text": "#{ asset_path 'locations/other-text.png' }"
+    "other-notext": "#{ asset_path 'locations/other-notext.png' }"
+    "other-orange": "#{ asset_path 'locations/other-orange.png' }"
+    "audio-text": "#{ asset_path 'locations/audio-text.png' }"
+    "audio-notext": "#{ asset_path 'locations/audio-notext.png' }"
+    "audio-orange": "#{ asset_path 'locations/audio-orange.png' }"
+    "multimedia-text": "#{ asset_path 'locations/multimedia-text.png' }"
+    "multimedia-notext": "#{ asset_path 'locations/multimedia-notext.png' }"
+    "multimedia-orange": "#{ asset_path 'locations/multimedia-orange.png' }"
+    "visual-text": "#{ asset_path 'visual-text.png' }"
+    "visual-notext": "#{ asset_path 'locations/visual-notext.png' }"
+    "visual-orange": "#{ asset_path 'locations/visual-orange.png' }"
 
-  var mapStyles = 
-  [
-    {
-      "elementType": "labels",
-      "stylers": [
-        { "visibility": "off" }
-      ]
-    },{
-      "featureType": "water",
-      "stylers": [
-        { "color": "#b4dedd" }
-      ]
-    },{
-      "featureType": "road.highway",
-      "stylers": [
-        { "visibility": "off" }
-      ]
-    },{
-      "featureType": "road",
-      "stylers": [
-        { "color": "#b4dedd" }
-      ]
-    },{
-      "featureType": "landscape",
-      "stylers": [
-        { "color": "#fcf8f5" }
-      ]
-    },{
-      "featureType": "administrative",
-      "stylers": [
-        { "visibility": "off" }
-      ]
-    },{
-      "featureType": "poi",
-      "stylers": [
-        { "visibility": "off" }
-      ]
-    },{
-      "featureType": "transit",
-      "stylers": [
-        { "visibility": "off" }
-      ]
-    },{
-      "featureType": "road.arterial",
-      "stylers": [
-        { "weight": 0.5 }
-      ]
-    }
-  ];
+  $(".menu-bar").mouseenter ->
+    $(".menu-icon").each ->
+      @src = @src.replace(/(-)((?:[a-z][a-z]+))/, "-text")
 
-  var markers;
-  litMap.buildMap({ 
-    provider: {
-      styles: mapStyles,
-      center: new google.maps.LatLng( 37.776414, -122.436157 ),
-      zoom: 13,
-      minZoom: 13,
-      mapTypeControl: false,
-      panControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT },
-      streetViewControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT },
-      zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT },
+  $(".menu-bar").mouseleave ->
+    $(".menu-icon").each ->
+      @src = @src.replace(/(-)((?:[a-z][a-z]+))/, "-notext")
 
-    }, 
-    internal: {id: 'map'}}, 
-    function(){
-      markers = #{raw @locationMarkers.to_json};
-      litMap.addMarkers(markers);
+  $(".menu-icon").mouseenter ->
+    @src = @src.replace(/(-)((?:[a-z][a-z]+))/, "-orange")
 
-      var mapObj = litMap.getMap()
+  $(".menu-icon").mouseleave ->
+    @src = @src.replace(/(-)((?:[a-z][a-z]+))/, "-text")
 
 
-      var bounds = new google.maps.LatLngBounds(
-        new google.maps.LatLng(37.678794,-122.618263),  //bottom left
-        new google.maps.LatLng(37.841512,-122.345864)   //top right
-      );
+  class InfoBoxBuilder extends Gmaps.Google.Builders.Marker # inherit from base builder
+    # override method
+    create_infowindow: ->
+      return null unless _.isString @args.infowindow
 
-      google.maps.event.addListener(mapObj, 'dragend', function() {
-        if (bounds.contains(mapObj.getCenter())) return;
-        
-        var c = mapObj.getCenter(),
-          x = c.lng(),
-          y = c.lat(),
-          maxX = bounds.getNorthEast().lng(),
-          maxY = bounds.getNorthEast().lat(),
-          minX = bounds.getSouthWest().lng(),
-          minY = bounds.getSouthWest().lat();
+      boxText = document.createElement("div")
+      boxText.setAttribute("class", 'info-window') #to customize
+      boxText.innerHTML = @args.infowindow
+      @infowindow = new InfoBox(@infobox(boxText))
 
-         if (x < minX) x = minX;
-         if (x > maxX) x = maxX;
-         if (y < minY) y = minY;
-         if (y > maxY) y = maxY;
+      # add @bind_infowindow() for < 2.1
 
-         mapObj.setCenter(new google.maps.LatLng(y, x));
-      });
-    });
-  
-  $('body').on('click', '.open-story', function(e) {
-    e.preventDefault();
+    infobox: (boxText)->
+      content: boxText
+      pixelOffset: new google.maps.Size(-140, 0)
+      boxStyle:
+        width: "280px"
 
-    $('.overlay').css('visibility', 'visible');
+  litMap = Gmaps.build 'Google', { builders: { Marker: InfoBoxBuilder} }
 
-    var stories = $(e.target).attr('data-stories').split(',');
-    var tabsHTML = '<ul class="nav nav-tabs">';
-    var tabsContentHTML = '<div class="tab-content">';
+  mapStyles = [
+    elementType: "labels"
+    stylers: [visibility: "off"]
+  ,
+    featureType: "water"
+    stylers: [color: "#b4dedd"]
+  ,
+    featureType: "road.highway"
+    stylers: [visibility: "off"]
+  ,
+    featureType: "road"
+    stylers: [color: "#b4dedd"]
+  ,
+    featureType: "landscape"
+    stylers: [color: "#fcf8f5"]
+  ,
+    featureType: "administrative"
+    stylers: [visibility: "off"]
+  ,
+    featureType: "poi"
+    stylers: [visibility: "off"]
+  ,
+    featureType: "transit"
+    stylers: [visibility: "off"]
+  ,
+    featureType: "road.arterial"
+    stylers: [weight: 0.5]
+  ]
 
-    for(var story in stories) {
-      if (story != 0) {
-        tabsHTML += '<li><a href="#' + (parseInt(story)+1) + '" data-toggle="tab">' + (parseInt(story)+1) + '</a></li>';
-        tabsContentHTML += '<div class="tab-pane ' + stories[story] + '" id="' + (parseInt(story)+1) + '"></div>';
-      } else {
-        tabsHTML += '<li class="active"><a href="#' + (parseInt(story)+1) + '" data-toggle="tab">' + (parseInt(story)+1) + '</a></li>';
-        tabsContentHTML += '<div class="tab-pane active ' + stories[story] + '" id="' + (parseInt(story)+1) + '"></div>';
-      }
+  markers = undefined
+  litMap.buildMap
+    provider:
+      styles: mapStyles
+      center: new google.maps.LatLng(37.776414, -122.436157)
+      zoom: 13
+      minZoom: 13
+      mapTypeControl: false
+      panControlOptions:
+        position: google.maps.ControlPosition.TOP_RIGHT
 
-    }
+      streetViewControlOptions:
+        position: google.maps.ControlPosition.TOP_RIGHT
 
-    tabsHTML += '</ul>';
-    tabsContentHTML += '</div>';
+      zoomControlOptions:
+        position: google.maps.ControlPosition.TOP_RIGHT
 
-    $('.story-text').html(tabsHTML + tabsContentHTML);
+    internal:
+      id: "map"
+  , ->
+    markers = #{raw @locationMarkers.to_json}
+    litMap.addMarkers markers
+    mapObj = litMap.getMap()
+    #bottom left
+    bounds = new google.maps.LatLngBounds(new google.maps.LatLng(37.678794, -122.618263), new google.maps.LatLng(37.841512, -122.345864)) #top right
+    google.maps.event.addListener mapObj, "dragend", ->
+      return  if bounds.contains(mapObj.getCenter())
+      c = mapObj.getCenter()
+      x = c.lng()
+      y = c.lat()
+      maxX = bounds.getNorthEast().lng()
+      maxY = bounds.getNorthEast().lat()
+      minX = bounds.getSouthWest().lng()
+      minY = bounds.getSouthWest().lat()
+      x = minX  if x < minX
+      x = maxX  if x > maxX
+      y = minY  if y < minY
+      y = maxY  if y > maxY
+      mapObj.setCenter new google.maps.LatLng(y, x)
 
-    for(var story in stories) {
-      $.get("/stories/"+stories[story]+".json", function(data) {
-        $('div.tab-pane.'+data.id).html(data.story_text);
-      });
-    }
-    return false;
-  });
+  $("body").on "click", ".open-story", (e) ->
+    e.preventDefault()
+    console.log "clicked..."
+    $(".overlay").css "visibility", "visible"
+    stories = $(e.target).attr("data-stories").split(",")
+    tabsHTML = "<ul class=\"nav nav-tabs\">"
+    tabsContentHTML = "<div class=\"tab-content\">"
+    for story of stories
+      unless story is 0
+        tabsHTML += "<li><a href=\"#" + (parseInt(story) + 1) + "\" data-toggle=\"tab\">" + (parseInt(story) + 1) + "</a></li>"
+        tabsContentHTML += "<div class=\"tab-pane " + stories[story] + "\" id=\"" + (parseInt(story) + 1) + "\"></div>"
+      else
+        tabsHTML += "<li class=\"active\"><a href=\"#" + (parseInt(story) + 1) + "\" data-toggle=\"tab\">" + (parseInt(story) + 1) + "</a></li>"
+        tabsContentHTML += "<div class=\"tab-pane active " + stories[story] + "\" id=\"" + (parseInt(story) + 1) + "\"></div>"
+    tabsHTML += "</ul>"
+    tabsContentHTML += "</div>"
+    $(".story-text").html tabsHTML + tabsContentHTML
+    for story of stories
+      $.get "/stories/" + stories[story] + ".json", (data) ->
+        $("div.tab-pane." + data.id).html data.story_text
 
-  $('body').on('click', '.close-story', function(e) {
-    e.preventDefault();
-    $('.overlay').css('visibility', 'hidden');
-    $('.story-text').html("");
-    return false;
-  });
+    false
+
+  $("body").on "click", ".close-story", (e) ->
+    e.preventDefault()
+    $(".overlay").css "visibility", "hidden"
+    $(".story-text").html ""
+    false
