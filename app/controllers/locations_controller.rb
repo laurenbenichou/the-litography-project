@@ -7,6 +7,10 @@ class LocationsController < ApplicationController
       marker.lat location.lat
       marker.lng location.lng
       marker.infowindow '<a href="#" class="open-story" data-stories="' << location.stories.map{ |story| story.id }.join(",") << '">' << location.name << '</a>'
+      marker.picture({
+       "url" => ActionController::Base.helpers.asset_path("marker-orange.png"),
+       "width" =>  30,
+       "height" => 30})
     end
   end
 
