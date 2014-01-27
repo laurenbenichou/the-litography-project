@@ -111,3 +111,17 @@ li a:hover {
 .nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
   background-color: rgba(0,0,0,.5);
 }
+
+
+.info-window {
+  color: white;
+  background-image: url(image_path('ink.png'));
+  width: 277px;
+  height: 224px;
+  text-align: center;
+  a.open-story {
+    color:white;
+    text-align: center;
+    line-height: 224px;
+  }
+}
