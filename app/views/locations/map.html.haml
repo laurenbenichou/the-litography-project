@@ -6,41 +6,46 @@
     %a{:href => '#', :class => 'close-story'} X
     .story-text
 
-%ul.top-bar
+%ul.top-bar.menu-bar
   %li
     %a.person.active{:href => '#'}
-      =image_tag 'location/person-notext.png', :class => 'menu-icon'
+      =image_tag 'location/person-orange.png', :class => 'menu-icon'
   %li
     %a.place.active{:href => '#'}
-      =image_tag 'location/place-notext.png', :class => 'menu-icon'
+      =image_tag 'location/place-orange.png', :class => 'menu-icon'
   %li
     %a.event.active{:href => '#'}
-      =image_tag 'location/event-notext.png', :class => 'menu-icon'
+      =image_tag 'location/event-orange.png', :class => 'menu-icon'
   %li
     %a.other.active{:href => '#'}
-      =image_tag 'location/other-notext.png', :class => 'menu-icon'
-%ul.left-bar
+      =image_tag 'location/other-orange.png', :class => 'menu-icon'
+%ul.left-bar.menu-bar
   %li
     %a.audio.active{:href => '#'}
-      =image_tag 'location/audio-notext.png', :class => 'menu-icon'
+      =image_tag 'location/audio-orange.png', :class => 'menu-icon'
   %li
     %a.multimedia.active{:href => '#'}
-      =image_tag 'location/multimedia-notext.png', :class => 'menu-icon'
+      =image_tag 'location/multimedia-orange.png', :class => 'menu-icon'
   %li
     %a.visual.active{:href => '#'}
-      =image_tag 'location/visual-notext.png', :class => 'menu-icon'
+      =image_tag 'location/visual-orange.png', :class => 'menu-icon'
 
 :javascript
-  $('.menu-icon').mouseenter(function() {
+  $('.menu-bar').mouseenter(function() {
     $('.menu-icon').each(function(){
-      this.src = this.src.replace('notext', 'text');
+      this.src = this.src.replace(/(-)((?:[a-z][a-z]+))/, "-text");
     });
   });
-
-  $('.menu-icon').mouseleave(function() {
+  $('.menu-bar').mouseleave(function() {
     $('.menu-icon').each(function(){
-      this.src = this.src.replace('text', 'notext');
+      this.src = this.src.replace(/(-)((?:[a-z][a-z]+))/, "-notext");
     });
+  });
+  $('.menu-icon').mouseenter(function() {
+    this.src = this.src.replace(/(-)((?:[a-z][a-z]+))/, "-orange");
+  });
+  $('.menu-icon').mouseleave(function() {
+    this.src = this.src.replace(/(-)((?:[a-z][a-z]+))/, "-text");
   });
 
   litMap = Gmaps.build('Google');
