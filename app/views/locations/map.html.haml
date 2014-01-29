@@ -33,27 +33,27 @@
 :coffee
 
   menuImagePaths =
-    "person-text": "#{ asset_path('/assets/locations/person-text.png') }"
-    "person-notext": "#{ asset_path 'locations/person-notext.png' }"
-    "person-orange": "#{ asset_path 'locations/person-orange.png' }"
-    "place-text": "#{ asset_path 'locations/place-text.png' }"
-    "place-notext": "#{ asset_path 'locations/place-notext.png' }"
-    "place-orange": "#{ asset_path 'locations/place-orange.png' }"
-    "event-text": "#{ asset_path 'locations/event-text.png' }"
-    "event-notext": "#{ asset_path 'locations/event-notext.png' }"
-    "event-orange": "#{ asset_path 'locations/event-orange.png' }"
-    "other-text": "#{ asset_path 'locations/other-text.png' }"
-    "other-notext": "#{ asset_path 'locations/other-notext.png' }"
-    "other-orange": "#{ asset_path 'locations/other-orange.png' }"
-    "audio-text": "#{ asset_path 'locations/audio-text.png' }"
-    "audio-notext": "#{ asset_path 'locations/audio-notext.png' }"
-    "audio-orange": "#{ asset_path 'locations/audio-orange.png' }"
-    "multimedia-text": "#{ asset_path 'locations/multimedia-text.png' }"
-    "multimedia-notext": "#{ asset_path 'locations/multimedia-notext.png' }"
-    "multimedia-orange": "#{ asset_path 'locations/multimedia-orange.png' }"
-    "visual-text": "#{ asset_path 'visual-text.png' }"
-    "visual-notext": "#{ asset_path 'locations/visual-notext.png' }"
-    "visual-orange": "#{ asset_path 'locations/visual-orange.png' }"
+    "person-text": "#{ image_path 'person-text.png' }"
+    "person-notext": "#{ image_path 'person-notext.png' }"
+    "person-orange": "#{ image_path 'person-orange.png' }"
+    "place-text": "#{ image_path 'place-text.png' }"
+    "place-notext": "#{ image_path 'place-notext.png' }"
+    "place-orange": "#{ image_path 'place-orange.png' }"
+    "event-text": "#{ image_path 'event-text.png' }"
+    "event-notext": "#{ image_path 'event-notext.png' }"
+    "event-orange": "#{ image_path 'event-orange.png' }"
+    "other-text": "#{ image_path 'other-text.png' }"
+    "other-notext": "#{ image_path 'other-notext.png' }"
+    "other-orange": "#{ image_path 'other-orange.png' }"
+    "audio-text": "#{ image_path 'audio-text.png' }"
+    "audio-notext": "#{ image_path 'audio-notext.png' }"
+    "audio-orange": "#{ image_path 'audio-orange.png' }"
+    "multimedia-text": "#{ image_path 'multimedia-text.png' }"
+    "multimedia-notext": "#{ image_path 'multimedia-notext.png' }"
+    "multimedia-orange": "#{ image_path 'multimedia-orange.png' }"
+    "visual-text": "#{ image_path 'visual-text.png' }"
+    "visual-notext": "#{ image_path 'visual-notext.png' }"
+    "visual-orange": "#{ image_path 'visual-orange.png' }"
 
   $(".menu-bar").mouseenter ->
     $(".menu-icon").each ->
@@ -78,6 +78,29 @@
       boxText = document.createElement("div")
       boxText.setAttribute("class", 'info-window') #to customize
       boxText.innerHTML = @args.infowindow
+      $(boxText).on 'click', (e)->
+        e.preventDefault()
+        $(".overlay").css "visibility", "visible"
+        stories = $(e.target).attr("data-stories").split(",")
+        tabsHTML = "<ul class=\"nav nav-tabs\">"
+        tabsContentHTML = "<div class=\"tab-content\">"
+        for story of stories
+          unless story is '0'
+            tabsHTML += "<li><a href=\"#" + (parseInt(story) + 1) + "\" data-toggle=\"tab\">" + (parseInt(story) + 1) + "</a></li>"
+            tabsContentHTML += "<div class=\"tab-pane " + stories[story] + "\" id=\"" + (parseInt(story) + 1) + "\"></div>"
+          else
+            console.log(story)
+            tabsHTML += "<li class=\"active\"><a href=\"#" + (parseInt(story) + 1) + "\" data-toggle=\"tab\">" + (parseInt(story) + 1) + "</a></li>"
+            tabsContentHTML += "<div class=\"tab-pane active " + stories[story] + "\" id=\"" + (parseInt(story) + 1) + "\"></div>"
+        tabsHTML += "</ul>"
+        tabsContentHTML += "</div>"
+        $(".story-text").html tabsHTML + tabsContentHTML
+        for story of stories
+          $.get "/stories/" + stories[story] + ".json", (data) ->
+            $("div.tab-pane." + data.id).html data.story_text
+
+        false
+
       @infowindow = new InfoBox(@infobox(boxText))
 
       # add @bind_infowindow() for < 2.1
@@ -160,27 +183,7 @@
       mapObj.setCenter new google.maps.LatLng(y, x)
 
   $("body").on "click", ".open-story", (e) ->
-    e.preventDefault()
-    console.log "clicked..."
-    $(".overlay").css "visibility", "visible"
-    stories = $(e.target).attr("data-stories").split(",")
-    tabsHTML = "<ul class=\"nav nav-tabs\">"
-    tabsContentHTML = "<div class=\"tab-content\">"
-    for story of stories
-      unless story is 0
-        tabsHTML += "<li><a href=\"#" + (parseInt(story) + 1) + "\" data-toggle=\"tab\">" + (parseInt(story) + 1) + "</a></li>"
-        tabsContentHTML += "<div class=\"tab-pane " + stories[story] + "\" id=\"" + (parseInt(story) + 1) + "\"></div>"
-      else
-        tabsHTML += "<li class=\"active\"><a href=\"#" + (parseInt(story) + 1) + "\" data-toggle=\"tab\">" + (parseInt(story) + 1) + "</a></li>"
-        tabsContentHTML += "<div class=\"tab-pane active " + stories[story] + "\" id=\"" + (parseInt(story) + 1) + "\"></div>"
-    tabsHTML += "</ul>"
-    tabsContentHTML += "</div>"
-    $(".story-text").html tabsHTML + tabsContentHTML
-    for story of stories
-      $.get "/stories/" + stories[story] + ".json", (data) ->
-        $("div.tab-pane." + data.id).html data.story_text
 
-    false
 
   $("body").on "click", ".close-story", (e) ->
     e.preventDefault()
