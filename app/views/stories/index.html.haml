@@ -11,7 +11,7 @@
 
   - @stories.each do |story|
     %tr
-      %td= story.story_text
+      %td= story.story_text.html_safe
       %td= story.tags
       %td= story.location_id
       %td= link_to 'Show', story
