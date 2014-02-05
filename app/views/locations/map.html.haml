@@ -69,8 +69,11 @@
       boxText.innerHTML = @args.infowindow
       $(boxText).on 'click', (e)->
         e.preventDefault()
-        $(".overlay").css "visibility", "visible"
-        stories = $(e.target).attr("data-stories").split(",")
+        if $(e.target).is("div")
+          false
+        else
+          $(".overlay").css "visibility", "visible"
+          stories = $(e.target).attr("data-stories").split(",")
         tabsHTML = "<ul class=\"nav nav-tabs\">"
         tabsContentHTML = "<div class=\"tab-content\">"
         for story of stories
@@ -78,7 +81,6 @@
             tabsHTML += "<li><a href=\"#" + (parseInt(story) + 1) + "\" data-toggle=\"tab\">" + (parseInt(story) + 1) + "</a></li>"
             tabsContentHTML += "<div class=\"tab-pane " + stories[story] + "\" id=\"" + (parseInt(story) + 1) + "\"></div>"
           else
-            console.log(story)
             tabsHTML += "<li class=\"active\"><a href=\"#" + (parseInt(story) + 1) + "\" data-toggle=\"tab\">" + (parseInt(story) + 1) + "</a></li>"
             tabsContentHTML += "<div class=\"tab-pane active " + stories[story] + "\" id=\"" + (parseInt(story) + 1) + "\"></div>"
         tabsHTML += "</ul>"
