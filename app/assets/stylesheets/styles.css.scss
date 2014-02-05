@@ -26,9 +26,9 @@ html, body {
   position: fixed;
   top: 0;
   left: 0;
-	height: 100%;
-	width: 100%;
-	margin: 0;
+      height: 100%;
+      width: 100%;
+      margin: 0;
 }
 
 .new_location {
@@ -73,6 +73,9 @@ li a:hover {
   margin-top: -141px;
 }
 
+.hidden {
+  visibility: hidden;
+}
 
 .menu-icon {
   width: 90px;
