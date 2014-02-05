@@ -8,66 +8,55 @@
 
 %ul.top-bar.menu-bar
   %li
-    %a.person.active{:href => '#'}
-      =image_tag 'location/person-orange.png', :class => 'menu-icon'
+    %a.person{:href => '#'}
+      =image_tag 'location/person-orange.png', :class => 'menu-icon active'
   %li
-    %a.place.active{:href => '#'}
-      =image_tag 'location/place-orange.png', :class => 'menu-icon'
+    %a.place{:href => '#'}
+      =image_tag 'location/place-orange.png', :class => 'menu-icon active'
   %li
-    %a.event.active{:href => '#'}
-      =image_tag 'location/event-orange.png', :class => 'menu-icon'
+    %a.event{:href => '#'}
+      =image_tag 'location/event-orange.png', :class => 'menu-icon active'
   %li
-    %a.other.active{:href => '#'}
-      =image_tag 'location/other-orange.png', :class => 'menu-icon'
+    %a.other{:href => '#'}
+      =image_tag 'location/other-orange.png', :class => 'menu-icon active'
 %ul.left-bar.menu-bar
   %li
-    %a.audio.active{:href => '#'}
-      =image_tag 'location/audio-orange.png', :class => 'menu-icon'
+    %a.audio{:href => '#'}
+      =image_tag 'location/audio-orange.png', :class => 'menu-icon active'
   %li
-    %a.multimedia.active{:href => '#'}
-      =image_tag 'location/multimedia-orange.png', :class => 'menu-icon'
+    %a.multimedia{:href => '#'}
+      =image_tag 'location/multimedia-orange.png', :class => 'menu-icon active'
   %li
-    %a.visual.active{:href => '#'}
-      =image_tag 'location/visual-orange.png', :class => 'menu-icon'
+    %a.visual{:href => '#'}
+      =image_tag 'location/visual-orange.png', :class => 'menu-icon active'
 
 :coffee
-
-  menuImagePaths =
-    "person-text": "#{ image_path 'person-text.png' }"
-    "person-notext": "#{ image_path 'person-notext.png' }"
-    "person-orange": "#{ image_path 'person-orange.png' }"
-    "place-text": "#{ image_path 'place-text.png' }"
-    "place-notext": "#{ image_path 'place-notext.png' }"
-    "place-orange": "#{ image_path 'place-orange.png' }"
-    "event-text": "#{ image_path 'event-text.png' }"
-    "event-notext": "#{ image_path 'event-notext.png' }"
-    "event-orange": "#{ image_path 'event-orange.png' }"
-    "other-text": "#{ image_path 'other-text.png' }"
-    "other-notext": "#{ image_path 'other-notext.png' }"
-    "other-orange": "#{ image_path 'other-orange.png' }"
-    "audio-text": "#{ image_path 'audio-text.png' }"
-    "audio-notext": "#{ image_path 'audio-notext.png' }"
-    "audio-orange": "#{ image_path 'audio-orange.png' }"
-    "multimedia-text": "#{ image_path 'multimedia-text.png' }"
-    "multimedia-notext": "#{ image_path 'multimedia-notext.png' }"
-    "multimedia-orange": "#{ image_path 'multimedia-orange.png' }"
-    "visual-text": "#{ image_path 'visual-text.png' }"
-    "visual-notext": "#{ image_path 'visual-notext.png' }"
-    "visual-orange": "#{ image_path 'visual-orange.png' }"
+  menuURLs = #{@menuURLs}
 
   $(".menu-bar").mouseenter ->
-    $(".menu-icon").each ->
-      @src = @src.replace(/(-)((?:[a-z][a-z]+))/, "-text")
+    $(".menu-icon").not(".active").each ->
+      this.src = menuURLs[$(this).parent().attr('class')+'-text']
 
   $(".menu-bar").mouseleave ->
-    $(".menu-icon").each ->
-      @src = @src.replace(/(-)((?:[a-z][a-z]+))/, "-notext")
+    $(".menu-icon").not(".active").each ->
+      this.src = menuURLs[$(this).parent().attr('class')+'-notext']
 
   $(".menu-icon").mouseenter ->
-    @src = @src.replace(/(-)((?:[a-z][a-z]+))/, "-orange")
+    if $(this).hasClass("active")
+      this.src = menuURLs[$(this).parent().attr('class')+'-text']
+    else
+      this.src = menuURLs[$(this).parent().attr('class')+'-orange']
 
   $(".menu-icon").mouseleave ->
-    @src = @src.replace(/(-)((?:[a-z][a-z]+))/, "-text")
+    if $(this).hasClass("active")
+      this.src = menuURLs[$(this).parent().attr('class')+'-orange']
+    else
+      this.src = menuURLs[$(this).parent().attr('class')+'-text']
+
+  $(".menu-icon.active").click (e)->
+    e.preventDefault()
+    $(this).toggleClass("active")
+    false
 
 
   class InfoBoxBuilder extends Gmaps.Google.Builders.Marker # inherit from base builder
@@ -181,9 +170,6 @@
       y = minY  if y < minY
       y = maxY  if y > maxY
       mapObj.setCenter new google.maps.LatLng(y, x)
-
-  $("body").on "click", ".open-story", (e) ->
-
 
   $("body").on "click", ".close-story", (e) ->
     e.preventDefault()
