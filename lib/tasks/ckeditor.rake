@@ -20,23 +20,23 @@ task "assets:precompile" => :environment do
     latest_digest = Rails.application.assets.find_asset(filename).try(:digest)
 
     # Debug information
-    puts '---- ' + file + ' ----'
+    #puts '---- ' + file + ' ----'
 
     # Compare digest of this file to latest digest
     # [1] is the enclosed capture in the fingerprint regex above
     this_digest = file.match(fingerprint)[1]
     if (this_digest == latest_digest)
       # This file's digest matches latest digest, copy
-      puts 'Matching digest, copying ' + file
+      #puts 'Matching digest, copying ' + file
       FileUtils.cp file, nondigest, verbose: true
     else
       # This file's digest doesn't match latest digest, ignore
-      puts 'Latest digest: ' + latest_digest
-      puts 'This digest:   ' + this_digest
-      puts 'Non-matching digest, not copying ' + file
+      #puts 'Latest digest: ' + latest_digest
+      #puts 'This digest:   ' + this_digest
+      #puts 'Non-matching digest, not copying ' + file
     end
 
     # Debug information
-    puts '---- end ----'
+    #puts '---- end ----'
   end
 end
