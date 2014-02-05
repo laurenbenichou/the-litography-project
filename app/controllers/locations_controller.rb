@@ -10,32 +10,7 @@ class LocationsController < ApplicationController
       marker.picture({
        "url" => ActionController::Base.helpers.asset_path("marker-orange.png"),
        "width" =>  30,
-       "height" => 30})
-
-    @menuURLs = {
-      "person-orange" => ActionController::Base.helpers.asset_path("location/person-orange.png"),
-      "person-notext" => ActionController::Base.helpers.asset_path("location/person-notext.png"),
-      "person-text" => ActionController::Base.helpers.asset_path("location/person-text.png"),
-      "place-orange" => ActionController::Base.helpers.asset_path("location/place-orange.png"),
-      "place-notext" => ActionController::Base.helpers.asset_path("location/place-notext.png"),
-      "place-text" => ActionController::Base.helpers.asset_path("location/place-text.png"),
-      "event-orange" => ActionController::Base.helpers.asset_path("location/event-orange.png"),
-      "event-notext" => ActionController::Base.helpers.asset_path("location/event-notext.png"),
-      "event-text" => ActionController::Base.helpers.asset_path("location/event-text.png"),
-      "other-orange" => ActionController::Base.helpers.asset_path("location/other-orange.png"),
-      "other-notext" => ActionController::Base.helpers.asset_path("location/other-notext.png"),
-      "other-text" => ActionController::Base.helpers.asset_path("location/other-text.png"),
-      "audio-orange" => ActionController::Base.helpers.asset_path("location/audio-orange.png"),
-      "audio-notext" => ActionController::Base.helpers.asset_path("location/audio-notext.png"),
-      "audio-text" => ActionController::Base.helpers.asset_path("location/audio-text.png"),
-      "multimedia-orange" => ActionController::Base.helpers.asset_path("location/multimedia-orange.png"),
-      "multimedia-notext" => ActionController::Base.helpers.asset_path("location/multimedia-notext.png"),
-      "multimedia-text" => ActionController::Base.helpers.asset_path("location/multimedia-text.png"),
-      "visual-orange" => ActionController::Base.helpers.asset_path("location/visual-orange.png"),
-      "visual-notext" => ActionController::Base.helpers.asset_path("location/visual-notext.png"),
-      "visual-text" => ActionController::Base.helpers.asset_path("location/visual-text.png")
-    }.to_json
-    
+       "height" => 31})
     end
   end
 
