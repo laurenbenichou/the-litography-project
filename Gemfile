@@ -42,20 +42,30 @@ end
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
-group :production do
+group :production do # using unicorn in production (doesn't work on Windows)
 	gem 'rails_12factor'
 	gem 'unicorn'
 end
 
+# gem for newrelic performance monitoring
 gem 'newrelic_rpm'
 
+# mapable models gem
 gem 'geokit'
 gem 'geokit-rails'
 
+# admin users gem
 gem 'devise'
 
+# haml markup language compiler gem
 gem 'haml-rails'
 
+# rich text editor for story model
 gem 'ckeditor'
 
+# google maps gem
 gem 'gmaps4rails'
+
+# gems to enable user uploads to AWS S3
+gem "paperclip", "~> 3.0"
+gem "aws-sdk"
