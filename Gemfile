@@ -67,5 +67,5 @@ gem 'ckeditor'
 gem 'gmaps4rails'
 
 # gems to enable user uploads to AWS S3
-gem "paperclip", "~> 3.0"
-gem "aws-sdk"
+#gem "paperclip", "~> 3.0"
+#gem "aws-sdk"
