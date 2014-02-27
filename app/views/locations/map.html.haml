@@ -31,7 +31,11 @@
     %a.visual{:href => '#'}
       =image_tag 'location/visual-orange.png', :class => 'menu-icon active'
 
-%input.search{:type => 'text'}
+
+.input-group.search
+  %input.form-control{:type => 'search', :placeholder => "Search"}
+  %span.input-group-btn
+    %button.btn.btn-default{:type => "button"} Go
 
 :coffee
   root = exports ? this
@@ -162,11 +166,11 @@
       id: "map"
   , ->
 
-    root.markers = litMap.addMarkers #{raw @locationMarkers.to_json}
+    root.markersJSON = #{raw @locationMarkers.to_json}
+    root.markers = litMap.addMarkers root.markersJSON
 
     mapObj = litMap.getMap()
-    #bottom left
-    bounds = new google.maps.LatLngBounds(new google.maps.LatLng(37.678794, -122.618263), new google.maps.LatLng(37.841512, -122.345864)) #top right
+    bounds = new google.maps.LatLngBounds(new google.maps.LatLng(37.678794, -122.618263), new google.maps.LatLng(37.841512, -122.345864))
     google.maps.event.addListener mapObj, "dragend", ->
       return  if bounds.contains(mapObj.getCenter())
       c = mapObj.getCenter()
@@ -181,8 +185,6 @@
       y = minY  if y < minY
       y = maxY  if y > maxY
       mapObj.setCenter new google.maps.LatLng(y, x)
-
-  console.log root.markers
 
   $("body").on "click", ".close-story", (e) ->
     e.preventDefault()
