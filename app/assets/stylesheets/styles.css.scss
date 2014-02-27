@@ -37,21 +37,24 @@ html, body {
   width: 400px;
 }
 
+.gui {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 0;
+  overflow: visible;
+}
+
 .logo {
   position: fixed;
-  top: 30px;
-  left: 40px;
+  top: 40px;
+  left: 90px;
 }
 
-
-.table-center {
-  display: table;
-  margin: 0 auto;
-}
 .top-bar {
   list-style: none;
   position: fixed;
-  top: 30px;
+  top: 20px;
   left: 50%;
   margin-left: -320px;
 }
@@ -69,8 +72,14 @@ li a:hover {
 .left-bar {
   list-style: none;
   position: fixed;
-  top: 50%;
-  margin-top: -141px;
+  top: 300px;
+  left: 80px;
+}
+
+.search {
+  position: fixed;
+  top: 50px;
+  right: 200px;
 }
 
 .hidden {
