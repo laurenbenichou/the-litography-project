@@ -1,10 +1,11 @@
 #map
-%a{:href => '#'}
-  =image_tag 'litography.png', :class => 'logo'
 .overlay
   .story
     %a{:href => '#', :class => 'close-story'} X
     .story-text
+
+%a.logo{:href => '#'}
+  =image_tag 'litography.png'
 
 %ul.top-bar.menu-bar
   %li
@@ -30,7 +31,11 @@
     %a.visual{:href => '#'}
       =image_tag 'location/visual-orange.png', :class => 'menu-icon active'
 
+%input.search{:type => 'text'}
+
 :coffee
+  root = exports ? this
+
   menuURLs = #{@menuURLs}
 
   $(".menu-bar").mouseenter ->
@@ -104,6 +109,8 @@
 
   litMap = Gmaps.build 'Google', { builders: { Marker: InfoBoxBuilder} }
 
+  root.litmap = litMap
+
   mapStyles = [
     elementType: "labels"
     stylers: [visibility: "off"]
@@ -133,7 +140,8 @@
     stylers: [weight: 0.5]
   ]
 
-  markers = undefined
+  root.markers = []
+
   litMap.buildMap
     provider:
       styles: mapStyles
@@ -153,8 +161,9 @@
     internal:
       id: "map"
   , ->
-    markers = #{raw @locationMarkers.to_json}
-    litMap.addMarkers markers
+
+    root.markers = litMap.addMarkers #{raw @locationMarkers.to_json}
+
     mapObj = litMap.getMap()
     #bottom left
     bounds = new google.maps.LatLngBounds(new google.maps.LatLng(37.678794, -122.618263), new google.maps.LatLng(37.841512, -122.345864)) #top right
@@ -172,6 +181,8 @@
       y = minY  if y < minY
       y = maxY  if y > maxY
       mapObj.setCenter new google.maps.LatLng(y, x)
+
+  console.log root.markers
 
   $("body").on "click", ".close-story", (e) ->
     e.preventDefault()

@@ -11,6 +11,7 @@ class LocationsController < ApplicationController
        "url" => ActionController::Base.helpers.asset_path("marker-orange.png"),
        "width" =>  30,
        "height" => 30})
+      marker.json({:location_type => location.location_type, :media_type => location.media_type })
 
     @menuURLs = {
       "person-orange" => ActionController::Base.helpers.asset_path("location/person-orange.png"),
