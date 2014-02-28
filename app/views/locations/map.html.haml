@@ -7,7 +7,7 @@
 %a.logo{:href => '#'}
   =image_tag 'litography.png'
 
-%ul.top-bar.menu-bar
+%ul.top-bar
   %li
     %a.person{:href => '#'}
       =image_tag 'location/person-orange.png', :class => 'menu-icon active'
@@ -20,7 +20,8 @@
   %li
     %a.other{:href => '#'}
       =image_tag 'location/other-orange.png', :class => 'menu-icon active'
-%ul.left-bar.menu-bar
+
+%ul.left-bar
   %li
     %a.audio{:href => '#'}
       =image_tag 'location/audio-orange.png', :class => 'menu-icon active'
@@ -41,32 +42,6 @@
   root = exports ? this
 
   menuURLs = #{@menuURLs}
-
-  $(".menu-bar").mouseenter ->
-    $(".menu-icon").not(".active").each ->
-      this.src = menuURLs[$(this).parent().attr('class')+'-text']
-
-  $(".menu-bar").mouseleave ->
-    $(".menu-icon").not(".active").each ->
-      this.src = menuURLs[$(this).parent().attr('class')+'-notext']
-
-  $(".menu-icon").mouseenter ->
-    if $(this).hasClass("active")
-      this.src = menuURLs[$(this).parent().attr('class')+'-text']
-    else
-      this.src = menuURLs[$(this).parent().attr('class')+'-orange']
-
-  $(".menu-icon").mouseleave ->
-    if $(this).hasClass("active")
-      this.src = menuURLs[$(this).parent().attr('class')+'-orange']
-    else
-      this.src = menuURLs[$(this).parent().attr('class')+'-text']
-
-  $(".menu-icon.active").click (e)->
-    e.preventDefault()
-    $(this).toggleClass("active")
-    false
-
 
   class InfoBoxBuilder extends Gmaps.Google.Builders.Marker # inherit from base builder
     # override method
@@ -185,6 +160,51 @@
       y = minY  if y < minY
       y = maxY  if y > maxY
       mapObj.setCenter new google.maps.LatLng(y, x)
+
+  $(".menu-bar").mouseenter ->
+    $(".menu-icon").not(".active").each ->
+      this.src = menuURLs[$(this).parent().attr('class')+'-text']
+
+  $(".menu-bar").mouseleave ->
+    $(".menu-icon").not(".active").each ->
+      this.src = menuURLs[$(this).parent().attr('class')+'-notext']
+
+  $(".menu-icon").mouseenter ->
+    if $(this).hasClass("active")
+      this.src = menuURLs[$(this).parent().attr('class')+'-text']
+    else
+      this.src = menuURLs[$(this).parent().attr('class')+'-orange']
+
+  $(".menu-icon").mouseleave ->
+    if $(this).hasClass("active")
+      this.src = menuURLs[$(this).parent().attr('class')+'-orange']
+    else
+      this.src = menuURLs[$(this).parent().attr('class')+'-text']
+
+  $(".menu-icon").click (e)->
+    e.preventDefault()
+    
+    toggleTarget = $(e.target).parent().attr('class')
+
+    if $(this).hasClass("active")
+      hideMarkers = true
+    else
+      hideMarkers = false
+
+    i = 0
+    while i < root.markers.length
+      console.log root.markersJSON[i]['location_type']
+      console.log toggleTarget
+
+      if root.markersJSON[i]['location_type'] is toggleTarget or root.markersJSON[i]['media_type'] is toggleTarget
+        console.log 'here'
+        if hideMarkers
+          root.markers[i].hide()
+        else
+          root.markers[i].show()
+      i = i + 1
+      
+    $(this).toggleClass("active")
 
   $("body").on "click", ".close-story", (e) ->
     e.preventDefault()
