@@ -191,20 +191,19 @@
     else
       hideMarkers = false
 
+    $(this).toggleClass("active")
+
     i = 0
     while i < root.markers.length
-      console.log root.markersJSON[i]['location_type']
-      console.log toggleTarget
-
       if root.markersJSON[i]['location_type'] is toggleTarget or root.markersJSON[i]['media_type'] is toggleTarget
-        console.log 'here'
         if hideMarkers
           root.markers[i].hide()
         else
-          root.markers[i].show()
+          if $("."+root.markersJSON[i]['location_type']+" img").hasClass('active') and $("."+root.markersJSON[i]['media_type']+" img").hasClass('active')
+            root.markers[i].show()
       i = i + 1
-      
-    $(this).toggleClass("active")
+
+    
 
   $("body").on "click", ".close-story", (e) ->
     e.preventDefault()
