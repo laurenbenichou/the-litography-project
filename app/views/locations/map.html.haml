@@ -7,7 +7,7 @@
 %a.logo{:href => '#'}
   =image_tag 'litography.png'
 
-%ul.top-bar
+%ul.top-bar.menu-bar
   %li
     %a.person{:href => '#'}
       =image_tag 'location/person-orange.png', :class => 'menu-icon active'
@@ -21,7 +21,7 @@
     %a.other{:href => '#'}
       =image_tag 'location/other-orange.png', :class => 'menu-icon active'
 
-%ul.left-bar
+%ul.left-bar.menu-bar
   %li
     %a.audio{:href => '#'}
       =image_tag 'location/audio-orange.png', :class => 'menu-icon active'
@@ -146,6 +146,9 @@
 
     mapObj = litMap.getMap()
     bounds = new google.maps.LatLngBounds(new google.maps.LatLng(37.678794, -122.618263), new google.maps.LatLng(37.841512, -122.345864))
+    google.maps.event.addListener mapObj, "tilesloaded", ->
+      console.log "loaded"
+
     google.maps.event.addListener mapObj, "dragend", ->
       return  if bounds.contains(mapObj.getCenter())
       c = mapObj.getCenter()
