@@ -11,7 +11,7 @@ class LocationsController < ApplicationController
        "url" => ActionController::Base.helpers.asset_path("marker-orange.png"),
        "width" =>  30,
        "height" => 30})
-      marker.json({:location_type => location.location_type, :media_type => location.media_type })
+      marker.json({:location_type => location.location_type, :media_type => location.media_type, :location_tags => location.stories.pluck(:tags).join(',').split(',').collect{ |x| x.strip.downcase }.uniq })
 
     @menuURLs = {
       "person-orange" => ActionController::Base.helpers.asset_path("location/person-orange.png"),
@@ -36,7 +36,9 @@ class LocationsController < ApplicationController
       "visual-notext" => ActionController::Base.helpers.asset_path("location/visual-notext.png"),
       "visual-text" => ActionController::Base.helpers.asset_path("location/visual-text.png")
     }.to_json
-  
+
+    @tags = Story.pluck(:tags).join(',').split(',').collect{ |x| x.strip.downcase }.uniq
+
     end
   end
 
