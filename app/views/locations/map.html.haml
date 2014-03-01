@@ -1,3 +1,4 @@
+.splash
 #map
 .overlay
   .story
@@ -147,7 +148,7 @@
     mapObj = litMap.getMap()
     bounds = new google.maps.LatLngBounds(new google.maps.LatLng(37.678794, -122.618263), new google.maps.LatLng(37.841512, -122.345864))
     google.maps.event.addListener mapObj, "tilesloaded", ->
-      console.log "loaded"
+      $('.splash').remove();
 
     google.maps.event.addListener mapObj, "dragend", ->
       return  if bounds.contains(mapObj.getCenter())
@@ -206,10 +207,26 @@
             root.markers[i].show()
       i = i + 1
 
-    
-
   $("body").on "click", ".close-story", (e) ->
     e.preventDefault()
     $(".overlay").css "visibility", "hidden"
     $(".story-text").html ""
     false
+
+  mapTags = (list) ->
+    $.map list, (tagname) ->
+      tag: tagname
+
+  tags = new Bloodhound(
+    datumTokenizer: (d) ->
+      Bloodhound.tokenizers.whitespace d.tag
+
+    queryTokenizer: Bloodhound.tokenizers.whitespace
+    local: mapTags(#{@tags})
+  )
+
+  tags.initialize()
+
+  $(".search input").typeahead null,
+    displayKey: "tag"
+    source: tags.ttAdapter()

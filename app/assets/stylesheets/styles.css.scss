@@ -82,6 +82,14 @@ li a:hover {
   right: 10%;
   width: 250px;
 }
+.tt-suggestion {
+  background: white;
+  padding: 5px;
+  border: 1px solid black;
+  cursor: pointer;
+  border-radius: 3px;
+  width: auto;
+}
 
 .hidden {
   visibility: hidden;
@@ -137,4 +145,19 @@ li a:hover {
     text-align: center;
     line-height: 224px;
   }
+}
+
+.splash {
+  background: url(image_path('splash.jpg')) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+
+  z-index: 99999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
 }
