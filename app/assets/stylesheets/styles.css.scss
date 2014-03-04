@@ -37,14 +37,6 @@ html, body {
   width: 400px;
 }
 
-.gui {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 0;
-  overflow: visible;
-}
-
 .logo {
   position: fixed;
   top: 40px;
@@ -80,7 +72,10 @@ li a:hover {
   position: fixed;
   top: 50px;
   right: 10%;
-  width: 250px;
+  width: 270px;
+}
+.search-icon {
+  cursor: pointer;
 }
 .tt-suggestion {
   background: white;
@@ -89,6 +84,9 @@ li a:hover {
   cursor: pointer;
   border-radius: 3px;
   width: auto;
+}
+.twitter-typeahead {
+  float: right;
 }
 
 .hidden {
