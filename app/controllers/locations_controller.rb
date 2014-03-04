@@ -2,7 +2,10 @@ class LocationsController < ApplicationController
   before_action :set_location, only: [:show, :edit, :update, :destroy]
 
   def map
+    # get all the locations
     locations = Location.all
+
+    # iterate over the locations and set markers with lat,lng, infowindow text, picture, and json (location/media types and tags from all stories associated with the location)
     @locationMarkers = Gmaps4rails.build_markers(locations) do |location, marker|
       marker.lat location.lat
       marker.lng location.lng
@@ -13,6 +16,7 @@ class LocationsController < ApplicationController
        "height" => 30})
       marker.json({:location_type => location.location_type, :media_type => location.media_type, :location_tags => location.stories.pluck(:tags).join(',').split(',').collect{ |x| x.strip.downcase }.uniq })
 
+    # these URLs are passed to the coffeescript to be used for the menu/toggle icons in different states (hover, active, etc.)
     @menuURLs = {
       "person-orange" => ActionController::Base.helpers.asset_path("location/person-orange.png"),
       "person-notext" => ActionController::Base.helpers.asset_path("location/person-notext.png"),
@@ -37,6 +41,7 @@ class LocationsController < ApplicationController
       "visual-text" => ActionController::Base.helpers.asset_path("location/visual-text.png")
     }.to_json
 
+    # get all tags from all stories for typeahead
     @tags = Story.pluck(:tags).join(',').split(',').collect{ |x| x.strip.downcase }.uniq
 
     end

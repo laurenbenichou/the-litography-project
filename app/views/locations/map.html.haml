@@ -42,27 +42,40 @@
     %button.btn.btn-default{:type => "button"} Go
 
 :coffee
+  # for global variables
   root = exports ? this
 
+  # URLs generated in locations_controller. Used for different states of menu icons (hover, active, etc.)
   menuURLs = #{@menuURLs}
 
+  # class for custom infobox (the inkblot). this will go away with the default google map infobox
   class InfoBoxBuilder extends Gmaps.Google.Builders.Marker # inherit from base builder
-    # override method
+    # override method for creating infobox
     create_infowindow: ->
       return null unless _.isString @args.infowindow
 
+      # the boxtext is the name of the location (will display inside the inkblot)
       boxText = document.createElement("div")
-      boxText.setAttribute("class", 'info-window') #to customize
+      boxText.setAttribute("class", 'info-window') # to customize in scss
       boxText.innerHTML = @args.infowindow
+      
+      # click event listner for opening the story overlay
       $(boxText).on 'click', (e)->
         e.preventDefault()
+
+        # ignore clicks on div (only care about clicks on text)
         if $(e.target).is("div")
           false
         else
+          # unhide overlay and get storyIDs from 'data-stories' attribute
           $(".overlay").css "visibility", "visible"
           stories = $(e.target).attr("data-stories").split(",")
+
+        # open bootstrap tabs HTML
         tabsHTML = "<ul class=\"nav nav-tabs\">"
         tabsContentHTML = "<div class=\"tab-content\">"
+
+        # iterate over stories and div scaffolding to the html
         for story of stories
           unless story is '0'
             tabsHTML += "<li><a href=\"#" + (parseInt(story) + 1) + "\" data-toggle=\"tab\">" + (parseInt(story) + 1) + "</a></li>"
@@ -70,9 +83,13 @@
           else
             tabsHTML += "<li class=\"active\"><a href=\"#" + (parseInt(story) + 1) + "\" data-toggle=\"tab\">" + (parseInt(story) + 1) + "</a></li>"
             tabsContentHTML += "<div class=\"tab-pane active " + stories[story] + "\" id=\"" + (parseInt(story) + 1) + "\"></div>"
+        
+        # close the scaffolding and add it to '.story-text'
         tabsHTML += "</ul>"
         tabsContentHTML += "</div>"
         $(".story-text").html tabsHTML + tabsContentHTML
+
+        # AJAX get the stories and add them to the story scaffolding
         for story of stories
           $.get "/stories/" + stories[story] + ".json", (data) ->
             $("div.tab-pane." + data.id).html data.story_text
@@ -89,10 +106,13 @@
       boxStyle:
         width: "280px"
 
+  # create the map object with the custom infoboxbuilder
   litMap = Gmaps.build 'Google', { builders: { Marker: InfoBoxBuilder} }
 
+  # add to global variables
   root.litmap = litMap
 
+  # styling for the map
   mapStyles = [
     elementType: "labels"
     stylers: [visibility: "off"]
@@ -122,9 +142,11 @@
     stylers: [weight: 0.5]
   ]
 
-  root.markers = []
+  root.markers = [] # not sure if this is important
 
+  # construct the map
   litMap.buildMap
+    # pass the styles and options (zoom, control location, etc.)
     provider:
       styles: mapStyles
       center: new google.maps.LatLng(37.776414, -122.436157)
@@ -140,18 +162,24 @@
       zoomControlOptions:
         position: google.maps.ControlPosition.TOP_RIGHT
 
+    # map target (div#map)
     internal:
       id: "map"
   , ->
 
+    # get markers from location passed object
     root.markersJSON = #{raw @locationMarkers.to_json}
-    root.markers = litMap.addMarkers root.markersJSON
+    root.markers = litMap.addMarkers root.markersJSON # add the markers to the map and save the references to the markers
 
+    # get the map "service object"
     mapObj = litMap.getMap()
-    bounds = new google.maps.LatLngBounds(new google.maps.LatLng(37.678794, -122.618263), new google.maps.LatLng(37.841512, -122.345864))
+
+    # add a listener to remove the splash when the map tiles are loaded
     google.maps.event.addListener mapObj, "tilesloaded", ->
       $('.splash').remove();
 
+    # bounds and logic to restrict draging outside san francisco
+    bounds = new google.maps.LatLngBounds(new google.maps.LatLng(37.678794, -122.618263), new google.maps.LatLng(37.841512, -122.345864))
     google.maps.event.addListener mapObj, "dragend", ->
       return  if bounds.contains(mapObj.getCenter())
       c = mapObj.getCenter()
@@ -167,6 +195,7 @@
       y = maxY  if y > maxY
       mapObj.setCenter new google.maps.LatLng(y, x)
 
+  # logic to show appropriate icons for certain hovers and activeness (uses menuURLs generated in controller)
   $(".menu-bar").mouseenter ->
     $(".menu-icon").not(".active").each ->
       this.src = menuURLs[$(this).parent().attr('class')+'-text']
@@ -187,18 +216,23 @@
     else
       this.src = menuURLs[$(this).parent().attr('class')+'-text']
 
+  # menu toggle logic for the markers
   $(".menu-icon").click (e)->
     e.preventDefault()
     
+    # track what toggle icon was clicked
     toggleTarget = $(e.target).parent().attr('class')
 
+    # only hide classes when icon is marked active
     if $(this).hasClass("active")
       hideMarkers = true
     else
       hideMarkers = false
 
+    # toggle activeness of icon
     $(this).toggleClass("active")
 
+    # loop through markers and toggle
     i = 0
     while i < root.markers.length
       if root.markersJSON[i]['location_type'] is toggleTarget or root.markersJSON[i]['media_type'] is toggleTarget
@@ -209,8 +243,11 @@
             root.markers[i].show()
       i = i + 1
 
+  # go button clicked for search
   $('.search button').click (e)->
     showClear = false
+    
+    # loop through markers and hide markers without tags
     i = 0
     while i < root.markers.length
       if $('.tt-input').val() is ''
@@ -224,6 +261,8 @@
     if showClear
       $('.clear-icon').attr('style', '')
 
+
+  # not currently being used, but if clear icon is clicked, restore appropriate icons and clear input
   $('.clear-icon').click (e)->
     i = 0
     while i < root.markers.length
@@ -233,11 +272,18 @@
 
     $('.clear-icon').attr('style', 'display: none;')
 
+
+  #  bind click event for closing the story
   $("body").on "click", ".close-story", (e) ->
     e.preventDefault()
     $(".overlay").css "visibility", "hidden"
     $(".story-text").html ""
     false
+
+
+  #
+  # begin typeahead code
+  #
 
   mapTags = (list) ->
     $.map list, (tagname) ->
@@ -256,3 +302,7 @@
   $(".search input").typeahead null,
     displayKey: "tag"
     source: tags.ttAdapter()
+
+  #
+  # end typeahead code
+  #
