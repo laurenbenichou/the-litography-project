@@ -35,7 +35,9 @@
 
 
 .input-group.search
-  %input.form-control{:type => 'search', :placeholder => "Search"}
+  %label{:for => 'search'}
+    =image_tag 'search_icon_orange.png', :title => "Search", :class => "search-icon"
+  %input.form-control{:type => 'search', :placeholder => "Search", :id => 'search'}
   %span.input-group-btn
     %button.btn.btn-default{:type => "button"} Go
 
@@ -206,6 +208,30 @@
           if $("."+root.markersJSON[i]['location_type']+" img").hasClass('active') and $("."+root.markersJSON[i]['media_type']+" img").hasClass('active')
             root.markers[i].show()
       i = i + 1
+
+  $('.search button').click (e)->
+    showClear = false
+    i = 0
+    while i < root.markers.length
+      if $('.tt-input').val() is ''
+        if $("."+root.markersJSON[i]['location_type']+" img").hasClass('active') and $("."+root.markersJSON[i]['media_type']+" img").hasClass('active')
+          root.markers[i].show()
+      else if root.markersJSON[i]['location_tags'].indexOf($('.tt-input').val()) is -1
+        showClear = true
+        root.markers[i].hide()
+      i = i + 1
+
+    if showClear
+      $('.clear-icon').attr('style', '')
+
+  $('.clear-icon').click (e)->
+    i = 0
+    while i < root.markers.length
+      if $("."+root.markersJSON[i]['location_type']+" img").hasClass('active') and $("."+root.markersJSON[i]['media_type']+" img").hasClass('active')
+          root.markers[i].show()
+      i = i + 1
+
+    $('.clear-icon').attr('style', 'display: none;')
 
   $("body").on "click", ".close-story", (e) ->
     e.preventDefault()
